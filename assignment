@@ -1,0 +1,1 @@
+a.  select a_name, salary from aircraft join certified using(a_id) join employees using(e_id) where salary >200000;
