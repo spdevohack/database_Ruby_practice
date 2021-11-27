@@ -11,12 +11,28 @@ aswell; every pilot is certified for some aircraft, and only pilots are certifie
 fly.Write each of the following queries in SQL.
 
 
+
+------------------------------******************--- Solution Query ---***************------------------------------------
+
+
+
+
+
 a. Find the names of aircraft such that all pilots certified to operate them earn
 more than $80,000.
 
+
 sol. select a_name, salary from aircraft join certified using(a_id) join employees using(e_id) where salary >200000;
 
+
+
+
+
+
 -----------------------------*************************-------------------------------------------
+
+
+
 
 
 
@@ -24,6 +40,9 @@ b. For each pilot who is certified for more than three aircraft, find the eid an
 maximum cruisingrange of the aircraft for which she or he is certified.
 
 sol.select e_id , max(cruise_range) from employees join certified using(e_id) join aircraft using(a_id) group by e_id having count(e_id) > 3;
+
+
+
 
 
 ---------------------------************************************-----------------------------------
@@ -34,7 +53,13 @@ route from Los Angeles to Honolulu.
 sol. select e_name from employees where salary < (select price from flight where f_from ='delhi' and f_to='iceland' order by price limit 1);
 
 
+
+
+
+
 --------------------------------********************************----------------------------------
+
+
 
 d. For all aircraft with cruisingrange over 1000 miles, find the name of the
   aircraft and the average salary of all pilots certified for this aircraft.
@@ -42,25 +67,50 @@ d. For all aircraft with cruisingrange over 1000 miles, find the name of the
 sol.select a_name, avg(salary) from aircraft join certified using (a_id) join employees using(e_id) group by a_name, cruise_range having cruise_range > 3000;
 
 
+
+
+
+
+
 --------------------------------*********************************----------------------------------
+
+
+
+
 
 e. Find the names of pilots certified for some Boeing aircraft.
 
 sol. select e_name from employees join certified using(e_id) join aircraft using(a_id) where a_name = 'indigo';
 
 
+
+
+
+
+
 ---------------------------------********************************----------------------------------
 
+
+
+
 f. Find the aids of all aircraft that can be used on routes from Los Angeles to
+
 Chicago.
+
+
 
 sol.select a_id from aircraft where cruise_range >=(select distance from flight where f_from = 'sydney' and f_to = 'tokyo');
 
 
+
+
 ---------------------------------********************************------------------------------------
 
+
 g. Identify the routes that can be piloted by every pilot who makes more than
+
 $100,000.
+
 
 
 
@@ -68,14 +118,23 @@ $100,000.
 
 ----------------------------------********************************-----------------------------------
 
+
+
+
 h. Print the enames of pilots who can operate planes with cruisingrange greater
+
 than 3000 miles but are not certified on any Boeing aircraft.
+
+
 
 sol.select e_name from employees join certified using(e_id) join aircraft using ( a_id) where cruise_range > 3000 and a_name != 'spicejet' ;
 
 
 
+
+
 -------------------------------**********************************------------------------------------
+
 
 i. A customer wants to travel from Madison to New York with no more than two
 changes of flight. List the choice of
@@ -83,6 +142,98 @@ changes of flight. List the choice of
 customer wants to arrive in New York by 6 p.m.
 
 
+
 sol.select depart from flight where f_from = 'delhi' and f_to ='mumbai' and arrive  <= '23:50:00';
+
+
+
+
+---------------------------**********************************---------------------------------------
+
+j. Compute the difference between the average salary of a pilot and the average
+salary of all employees (including pilots).
+
+
+
+sol. not yet
+
+
+
+
+
+
+
+
+-----------------------------*********************************--------------------------------------
+
+
+k. Print the name and salary of every nonpilot whose salary is more than the
+average salary for pilots.
+
+
+sol.airline_flight=# select e_name , salary,e_id from employees e where e.e_id not in (select c.e_id from certified c) and 
+airline_flight-# e.salary > (select avg(salary) from employees where e_id in (select e_id from certified ));
+ e_name | salary | e_id 
+--------+--------+------
+ krishi | 450000 | 1006
+(1 row)
+
+
+
+
+
+
+
+
+
+---------------------------*********************************-------------------------------------------
+
+
+
+l. Print the names of employees who are certified only on aircrafts with cruising
+range longer than 1000 miles.
+
+
+airline_flight=# select e_name from employees join certified using(e_id) join aircraft using(a_id) where cruise_range > 3100; 
+ e_name 
+--------
+ Rakesh
+ harish
+ Rakesh
+(3 rows)
+
+
+
+
+
+--------------------------**********************************-------------------------------------------
+
+m. Print the names of employees who are certified only on aircrafts with cruising
+range longer than 1000 miles, but on at least two such aircrafts.
+
+
+sol.  not yet solve
+
+
+
+
+
+
+
+
+-----------------------------------**********************************--------------------------------------
+
+
+n. Print the names of employees who are certified only on aircrafts with cruising
+range longer than 1000 miles and who are certified on some Boeing aircraft.
+
+
+
+airline_flight=# select e_name from employees join certified using(e_id) join aircraft using(a_id) where cruise_range > 3100 and a_name = 'spicejet' ;
+ e_name 
+--------
+ Rakesh
+ harish
+(2 rows)
 
 
