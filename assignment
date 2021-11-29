@@ -111,6 +111,16 @@ g. Identify the routes that can be piloted by every pilot who makes more than
 
 $100,000.
 
+sol.                                                              ^
+airline_flight=# select f_from , f_to from flight where distance < (select min(cruise_range) from aircraft join certified using(a_id) join employees using(e_id) where salary >300000);
+ f_from |    f_to    
+--------+------------
+ delhi  | mumbai
+ delhi  | chandigarh
+ delhi  | iceland
+ delhi  | iceland
+(4 rows)
+
 
 
 
@@ -155,7 +165,15 @@ salary of all employees (including pilots).
 
 
 
-sol. not yet
+sol. airline_flight=# select (emp_sal.avgsal - pil_sal.avgsal) As diff_sal  from (
+select avg(salary) as avgsal from employees where e_id in (select e_id from certified)) as pil_sal ,
+(select avg(salary) as avgsal from employees) as emp_sal ;
+      diff_sal       
+---------------------
+ -47000.000000000000
+(1 row)
+
+
 
 
 
